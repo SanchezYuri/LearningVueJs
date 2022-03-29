@@ -2,17 +2,16 @@ const CarroService = require('../services/CarroService');
 
 module.exports = {
     buscarTodos: async (req, res) =>{
-        let json = {error:'', result:[]};
-
+        const data = [];
         let carros = await CarroService.buscarTodos();
-
-        for( let i in carros){
-            json.result.push({
+        for(let i in carros){
+            data.push({
                 codigo: carros[i].codigo,
-                descricao: carros[i].modelo,
+                modelo: carros[i].modelo,
+                placa: carros[i].placa,
             })
         }
-        res.json(json);
+        res.json(data);
     },
     buscarUm: async(req, res) => {
         let json = {error:'', result:{}};
@@ -33,7 +32,6 @@ module.exports = {
 
         let modelo = req.body.modelo;
         let placa = req.body.placa;
-
         if(modelo && placa){
             let CarroCodigo = await CarroService.inserir(modelo, placa);
             json.result = {
